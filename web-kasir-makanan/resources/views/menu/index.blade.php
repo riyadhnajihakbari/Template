@@ -136,29 +136,6 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-// Show success message if exists
-@if(session('success'))
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: '{{ session('success') }}',
-        showConfirmButton: false,
-        timer: 2000,
-        toast: true,
-        position: 'top-end',
-        timerProgressBar: true
-    });
-@endif
-
-// Show error message if exists
-@if(session('error'))
-    Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: '{{ session('error') }}',
-        showConfirmButton: true
-    });
-@endif
 
 // Confirm delete with SweetAlert2
 function confirmDelete(menuId, menuName) {

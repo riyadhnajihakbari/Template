@@ -130,7 +130,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Transaksi Terbaru</h3>
                 </div>
-                <a href="{{ route('pos.index') }}" class="text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors flex items-center gap-1">
+                <a href="{{ route('reports.sales') }}" class="text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors flex items-center gap-1">
                     Lihat Semua 
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>

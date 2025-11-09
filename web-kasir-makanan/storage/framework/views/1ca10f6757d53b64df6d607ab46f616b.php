@@ -141,29 +141,6 @@
 <?php $__env->startPush('scripts'); ?>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-// Show success message if exists
-<?php if(session('success')): ?>
-    Swal.fire({
-        icon: 'success',
-        title: 'Berhasil!',
-        text: '<?php echo e(session('success')); ?>',
-        showConfirmButton: false,
-        timer: 2000,
-        toast: true,
-        position: 'top-end',
-        timerProgressBar: true
-    });
-<?php endif; ?>
-
-// Show error message if exists
-<?php if(session('error')): ?>
-    Swal.fire({
-        icon: 'error',
-        title: 'Error!',
-        text: '<?php echo e(session('error')); ?>',
-        showConfirmButton: true
-    });
-<?php endif; ?>
 
 // Confirm delete with SweetAlert2
 function confirmDelete(menuId, menuName) {
