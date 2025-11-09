@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\POSController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\UserController;
 
 // Auth routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -39,6 +40,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/sales', [ReportController::class, 'sales'])->name('sales');
         Route::get('/inventory', [ReportController::class, 'inventory'])->name('inventory');
     });
+
+    // User Management (Admin only)
+    Route::middleware('role:admin')->group(function () {
+        Route::resource('users', UserController::class);
+        Route::post('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+    });
 });
 
 // PWA Manifest
@@ -50,7 +57,7 @@ Route::get('/manifest.json', function () {
         'start_url' => '/dashboard',
         'display' => 'standalone',
         'background_color' => '#ffffff',
-        'theme_color' => '#3b82f6',
+        'theme_color' => '#FF6B35',
         'icons' => [
             [
                 'src' => '/images/icon-192.png',

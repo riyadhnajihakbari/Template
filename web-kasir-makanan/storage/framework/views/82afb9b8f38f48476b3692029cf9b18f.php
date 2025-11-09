@@ -2,119 +2,193 @@
 
 <?php $__env->startSection('content'); ?>
 <div class="p-6">
-    <!-- Header -->
-    <div class="mb-8">
-        <h2 class="text-3xl font-bold text-white mb-2">Dashboard</h2>
-        <p class="text-gray-400">Selamat datang kembali, <?php echo e(auth()->user()->name); ?>! 👋</p>
+    <!-- Header Section -->
+    <div class="mb-8 fade-in-up">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="text-4xl font-bold bg-gradient-to-r from-orange-500 via-orange-600 to-red-500 bg-clip-text text-transparent mb-2">
+                    Dashboard
+                </h2>
+                <p class="text-gray-600 flex items-center gap-2">
+                    <span>👋</span>
+                    <span>Selamat datang kembali, <strong><?php echo e(auth()->user()->name); ?></strong>!</span>
+                </p>
+            </div>
+            <div class="text-right">
+                <p class="text-sm text-gray-500"><?php echo e(now()->format('l')); ?></p>
+                <p class="text-lg font-semibold text-gray-800"><?php echo e(now()->format('d F Y')); ?></p>
+            </div>
+        </div>
     </div>
 
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <!-- Penjualan Hari Ini -->
-        <div class="stat-card-orange text-white rounded-xl shadow-lg p-6 dashboard-card">
-            <div class="flex items-center justify-between">
+        <div class="stat-card stat-orange text-white shadow-xl" style="animation: fadeInUp 0.6s ease-out 0.1s both;">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-sm">
+                        💰
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs font-semibold opacity-90">HARI INI</div>
+                    </div>
+                </div>
                 <div>
-                    <p class="text-white/80 text-sm mb-1 font-medium">Penjualan Hari Ini</p>
+                    <p class="text-white/90 text-sm mb-1 font-medium">Penjualan Hari Ini</p>
                     <h3 class="text-3xl font-bold">Rp <?php echo e(number_format($todaySales, 0, ',', '.')); ?></h3>
                 </div>
-                <div class="text-6xl opacity-30">💰</div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-white/20">
-                <p class="text-xs text-white/70">📅 <?php echo e(now()->format('d F Y')); ?></p>
+                <div class="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
+                    <span class="text-xs text-white/70">📅 <?php echo e(now()->format('d M Y')); ?></span>
+                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">Live</span>
+                </div>
             </div>
         </div>
 
         <!-- Transaksi Hari Ini -->
-        <div class="stat-card-green text-white rounded-xl shadow-lg p-6 dashboard-card">
-            <div class="flex items-center justify-between">
+        <div class="stat-card stat-green text-white shadow-xl" style="animation: fadeInUp 0.6s ease-out 0.2s both;">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-sm">
+                        📊
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs font-semibold opacity-90">TRANSAKSI</div>
+                    </div>
+                </div>
                 <div>
-                    <p class="text-white/80 text-sm mb-1 font-medium">Transaksi Hari Ini</p>
+                    <p class="text-white/90 text-sm mb-1 font-medium">Transaksi Hari Ini</p>
                     <h3 class="text-3xl font-bold"><?php echo e($todayOrders); ?></h3>
                 </div>
-                <div class="text-6xl opacity-30">📊</div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-white/20">
-                <p class="text-xs text-white/70">Transaksi berhasil</p>
+                <div class="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
+                    <span class="text-xs text-white/70">Total pesanan</span>
+                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">✓ Selesai</span>
+                </div>
             </div>
         </div>
 
         <!-- Rata-rata Transaksi -->
-        <div class="stat-card-purple text-white rounded-xl shadow-lg p-6 dashboard-card">
-            <div class="flex items-center justify-between">
+        <div class="stat-card stat-purple text-white shadow-xl" style="animation: fadeInUp 0.6s ease-out 0.3s both;">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-sm">
+                        📈
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs font-semibold opacity-90">RATA-RATA</div>
+                    </div>
+                </div>
                 <div>
-                    <p class="text-white/80 text-sm mb-1 font-medium">Rata-rata Transaksi</p>
+                    <p class="text-white/90 text-sm mb-1 font-medium">Rata-rata Transaksi</p>
                     <h3 class="text-3xl font-bold">
                         Rp <?php echo e($todayOrders > 0 ? number_format($todaySales / $todayOrders, 0, ',', '.') : 0); ?>
 
                     </h3>
                 </div>
-                <div class="text-6xl opacity-30">📈</div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-white/20">
-                <p class="text-xs text-white/70">Per transaksi</p>
+                <div class="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
+                    <span class="text-xs text-white/70">Per transaksi</span>
+                    <span class="text-xs bg-white/20 px-2 py-1 rounded-full">Avg</span>
+                </div>
             </div>
         </div>
 
-        <!-- Status -->
-        <div class="stat-card-blue text-white rounded-xl shadow-lg p-6 dashboard-card">
-            <div class="flex items-center justify-between">
-                <div>
-                    <p class="text-white/80 text-sm mb-1 font-medium">Status Sistem</p>
-                    <h3 class="text-2xl font-bold">Aktif</h3>
+        <!-- Status Sistem - UPDATED WITH OFFLINE STATUS -->
+        <div id="system-status-card" class="stat-card stat-blue text-white shadow-xl" style="animation: fadeInUp 0.6s ease-out 0.4s both;">
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <div id="status-icon" class="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-sm">
+                        ✅
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs font-semibold opacity-90">SISTEM</div>
+                    </div>
                 </div>
-                <div class="text-6xl opacity-30">✅</div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-white/20">
-                <p class="text-xs text-white/70">Semua sistem berjalan normal</p>
+                <div>
+                    <p class="text-white/90 text-sm mb-1 font-medium">Status Sistem</p>
+                    <h3 id="status-text" class="text-2xl font-bold">Online & Aktif</h3>
+                </div>
+                <div class="mt-4 pt-4 border-t border-white/20 flex items-center justify-between">
+                    <span id="status-message" class="text-xs text-white/70">All systems operational</span>
+                    <div id="status-indicator" class="flex gap-1">
+                        <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
+                        <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse" style="animation-delay: 0.2s"></span>
+                        <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse" style="animation-delay: 0.4s"></span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Recent Orders -->
-        <div class="glass-card rounded-xl shadow-lg p-6 dashboard-card">
+        <div class="modern-card p-6" style="animation: fadeInUp 0.6s ease-out 0.5s both;">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white flex items-center space-x-2">
-                    <span>📋</span>
-                    <span>Transaksi Terbaru</span>
-                </h3>
-                <a href="<?php echo e(route('pos.index')); ?>" class="text-sm font-medium hover:text-white transition-colors" style="color: #FF6B35;">
-                    Lihat Semua →
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center text-xl shadow-md">
+                        📋
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Transaksi Terbaru</h3>
+                </div>
+                <a href="<?php echo e(route('pos.index')); ?>" class="text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors flex items-center gap-1">
+                    Lihat Semua 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
                 </a>
             </div>
             
             <div class="overflow-x-auto">
-                <table class="w-full dark-table rounded-lg overflow-hidden">
+                <table class="modern-table">
                     <thead>
                         <tr>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase">No. Order</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase">Meja</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase">Total</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-gray-300 uppercase">Status</th>
+                            <th class="text-left rounded-tl-lg">No. Order</th>
+                            <th class="text-left">Meja</th>
+                            <th class="text-left">Total</th>
+                            <th class="text-left rounded-tr-lg">Status</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $__empty_1 = true; $__currentLoopData = $recentOrders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
                         <tr>
-                            <td class="px-4 py-3 text-sm text-gray-300 font-medium"><?php echo e($order->order_number); ?></td>
-                            <td class="px-4 py-3 text-sm text-gray-300">Meja <?php echo e($order->table_number); ?></td>
-                            <td class="px-4 py-3 text-sm font-semibold text-white">Rp <?php echo e(number_format($order->total_amount, 0, ',', '.')); ?></td>
-                            <td class="px-4 py-3">
+                            <td class="font-mono text-sm font-semibold text-gray-700"><?php echo e($order->order_number); ?></td>
+                            <td class="text-sm text-gray-600">
+                                <span class="inline-flex items-center gap-2">
+                                    <span class="text-base">🪑</span>
+                                    <?php echo e($order->table_number); ?>
+
+                                </span>
+                            </td>
+                            <td class="text-sm font-bold text-gray-800">Rp <?php echo e(number_format($order->total_amount, 0, ',', '.')); ?></td>
+                            <td>
                                 <?php if($order->status == 'completed'): ?>
-                                <span class="status-badge status-done">Selesai</span>
+                                <span class="status-badge status-done">
+                                    <span class="text-base">✓</span>
+                                    Selesai
+                                </span>
                                 <?php elseif($order->status == 'processing'): ?>
-                                <span class="status-badge status-process">Diproses</span>
+                                <span class="status-badge status-process">
+                                    <span class="text-base">⏳</span>
+                                    Diproses
+                                </span>
                                 <?php else: ?>
-                                <span class="status-badge status-new">Baru</span>
+                                <span class="status-badge status-new">
+                                    <span class="text-base">🆕</span>
+                                    Baru
+                                </span>
                                 <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         <tr>
-                            <td colspan="4" class="px-4 py-12 text-center">
-                                <div class="text-gray-500">
-                                    <div class="text-4xl mb-2">📭</div>
-                                    <p>Belum ada transaksi hari ini</p>
+                            <td colspan="4" class="px-4 py-16 text-center">
+                                <div class="flex flex-col items-center gap-3">
+                                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-4xl">
+                                        📭
+                                    </div>
+                                    <p class="text-gray-500 font-medium">Belum ada transaksi hari ini</p>
+                                    <a href="<?php echo e(route('pos.index')); ?>" class="btn-primary text-sm">
+                                        Buat Transaksi Baru
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -125,41 +199,55 @@
         </div>
 
         <!-- Popular Items -->
-        <div class="glass-card rounded-xl shadow-lg p-6 dashboard-card">
+        <div class="modern-card p-6" style="animation: fadeInUp 0.6s ease-out 0.6s both;">
             <div class="flex items-center justify-between mb-6">
-                <h3 class="text-xl font-bold text-white flex items-center space-x-2">
-                    <span>🔥</span>
-                    <span>Menu Populer Hari Ini</span>
-                </h3>
-                <a href="<?php echo e(route('menu.index')); ?>" class="text-sm font-medium hover:text-white transition-colors" style="color: #FF6B35;">
-                    Lihat Menu →
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center text-xl shadow-md">
+                        🔥
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">Menu Populer Hari Ini</h3>
+                </div>
+                <a href="<?php echo e(route('menu.index')); ?>" class="text-sm font-semibold text-orange-600 hover:text-orange-700 transition-colors flex items-center gap-1">
+                    Lihat Menu 
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
                 </a>
             </div>
             
             <div class="space-y-3">
-                <?php $__empty_1 = true; $__currentLoopData = $popularItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                <div class="flex items-center justify-between p-4 rounded-lg transition-all duration-300 hover:bg-white/5" 
-                     style="background-color: rgba(45, 45, 45, 0.5);">
+                <?php $__empty_1 = true; $__currentLoopData = $popularItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                <div class="flex items-center justify-between p-4 rounded-xl transition-all duration-300 hover:shadow-md border border-gray-100 hover:border-orange-200 bg-gradient-to-r from-white to-orange-50/30">
                     <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
-                             style="background: linear-gradient(135deg, #FF6B35, #E55A2B);">
-                            🍽️
+                        <div class="relative">
+                            <div class="w-14 h-14 rounded-xl flex items-center justify-center text-3xl bg-gradient-to-br from-orange-100 to-orange-200 shadow-sm">
+                                🍽️
+                            </div>
+                            <div class="absolute -top-2 -left-2 w-6 h-6 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-xs font-bold text-white shadow-md">
+                                <?php echo e($index + 1); ?>
+
+                            </div>
                         </div>
                         <div>
-                            <div class="font-semibold text-white"><?php echo e($item->name); ?></div>
-                            <div class="text-sm text-gray-400">Rp <?php echo e(number_format($item->price, 0, ',', '.')); ?></div>
+                            <div class="font-bold text-gray-800"><?php echo e($item->name); ?></div>
+                            <div class="text-sm text-gray-500">Rp <?php echo e(number_format($item->price, 0, ',', '.')); ?></div>
                         </div>
                     </div>
                     <div class="text-right">
-                        <div class="text-2xl font-bold" style="color: #FF6B35;"><?php echo e($item->total_sold); ?></div>
-                        <div class="text-xs text-gray-400">terjual</div>
+                        <div class="text-3xl font-bold bg-gradient-to-r from-orange-500 to-red-500 bg-clip-text text-transparent">
+                            <?php echo e($item->total_sold); ?>
+
+                        </div>
+                        <div class="text-xs text-gray-500 font-medium">terjual</div>
                     </div>
                 </div>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                <div class="text-center py-12">
-                    <div class="text-gray-500">
-                        <div class="text-4xl mb-2">🍽️</div>
-                        <p>Belum ada penjualan hari ini</p>
+                <div class="text-center py-16">
+                    <div class="flex flex-col items-center gap-3">
+                        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-4xl">
+                            🍽️
+                        </div>
+                        <p class="text-gray-500 font-medium">Belum ada penjualan hari ini</p>
                     </div>
                 </div>
                 <?php endif; ?>
@@ -167,49 +255,104 @@
         </div>
     </div>
 
-    <!-- Quick Actions (Optional) -->
-    <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-        <a href="<?php echo e(route('pos.index')); ?>" class="glass-card rounded-xl p-6 dashboard-card hover:scale-105 transition-transform duration-300">
-            <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 rounded-full flex items-center justify-center text-3xl"
-                     style="background: linear-gradient(135deg, #FF6B35, #E55A2B);">
+    <!-- Quick Actions -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <a href="<?php echo e(route('pos.index')); ?>" class="modern-card p-6 hover:shadow-2xl transition-all duration-300 group" style="animation: fadeInUp 0.6s ease-out 0.7s both;">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform">
                     💰
                 </div>
                 <div>
-                    <h4 class="font-bold text-white">Buat Transaksi Baru</h4>
-                    <p class="text-sm text-gray-400">Mulai penjualan baru</p>
+                    <h4 class="font-bold text-gray-800 text-lg">Transaksi Baru</h4>
+                    <p class="text-sm text-gray-600">Buat penjualan baru</p>
                 </div>
             </div>
         </a>
 
         <?php if(auth()->user()->isManajer() || auth()->user()->isAdmin()): ?>
-        <a href="<?php echo e(route('menu.index')); ?>" class="glass-card rounded-xl p-6 dashboard-card hover:scale-105 transition-transform duration-300">
-            <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 rounded-full flex items-center justify-center text-3xl"
-                     style="background: linear-gradient(135deg, #10b981, #059669);">
+        <a href="<?php echo e(route('menu.index')); ?>" class="modern-card p-6 hover:shadow-2xl transition-all duration-300 group" style="animation: fadeInUp 0.6s ease-out 0.8s both;">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform">
                     🍔
                 </div>
                 <div>
-                    <h4 class="font-bold text-white">Kelola Menu</h4>
-                    <p class="text-sm text-gray-400">Tambah atau edit menu</p>
+                    <h4 class="font-bold text-gray-800 text-lg">Kelola Menu</h4>
+                    <p class="text-sm text-gray-600">Tambah atau edit menu</p>
                 </div>
             </div>
         </a>
 
-        <a href="<?php echo e(route('reports.sales')); ?>" class="glass-card rounded-xl p-6 dashboard-card hover:scale-105 transition-transform duration-300">
-            <div class="flex items-center space-x-4">
-                <div class="w-14 h-14 rounded-full flex items-center justify-center text-3xl"
-                     style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+        <a href="<?php echo e(route('reports.sales')); ?>" class="modern-card p-6 hover:shadow-2xl transition-all duration-300 group" style="animation: fadeInUp 0.6s ease-out 0.9s both;">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-600 rounded-2xl flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform">
                     📈
                 </div>
                 <div>
-                    <h4 class="font-bold text-white">Lihat Laporan</h4>
-                    <p class="text-sm text-gray-400">Analisis penjualan</p>
+                    <h4 class="font-bold text-gray-800 text-lg">Lihat Laporan</h4>
+                    <p class="text-sm text-gray-600">Analisis penjualan</p>
                 </div>
             </div>
         </a>
         <?php endif; ?>
     </div>
 </div>
+
+<?php $__env->startPush('scripts'); ?>
+<script>
+// Update status sistem based on connection
+function updateSystemStatus() {
+    const card = document.getElementById('system-status-card');
+    const icon = document.getElementById('status-icon');
+    const text = document.getElementById('status-text');
+    const message = document.getElementById('status-message');
+    const indicator = document.getElementById('status-indicator');
+    const connectionDot = document.getElementById('connection-status');
+
+    if (navigator.onLine) {
+        // Online
+        card.className = 'stat-card stat-blue text-white shadow-xl';
+        icon.innerHTML = '✅';
+        text.textContent = 'Online & Aktif';
+        message.textContent = 'All systems operational';
+        indicator.innerHTML = `
+            <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
+            <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse" style="animation-delay: 0.2s"></span>
+            <span class="w-2 h-2 bg-green-300 rounded-full animate-pulse" style="animation-delay: 0.4s"></span>
+        `;
+        if (connectionDot) {
+            connectionDot.className = 'w-2 h-2 bg-green-500 rounded-full animate-pulse';
+        }
+    } else {
+        // Offline
+        card.className = 'stat-card stat-red text-white shadow-xl';
+        icon.innerHTML = '⚠️';
+        text.textContent = 'Mode Offline';
+        message.textContent = 'Data akan disinkronkan saat online';
+        indicator.innerHTML = `
+            <span class="w-2 h-2 bg-red-300 rounded-full animate-pulse"></span>
+            <span class="w-2 h-2 bg-red-300 rounded-full animate-pulse" style="animation-delay: 0.2s"></span>
+            <span class="w-2 h-2 bg-red-300 rounded-full animate-pulse" style="animation-delay: 0.4s"></span>
+        `;
+        if (connectionDot) {
+            connectionDot.className = 'w-2 h-2 bg-red-500 rounded-full animate-pulse';
+        }
+    }
+}
+
+// Listen to connection changes
+window.addEventListener('online', () => {
+    updateSystemStatus();
+    Toast.success('Koneksi kembali online! Data akan disinkronkan.');
+});
+
+window.addEventListener('offline', () => {
+    updateSystemStatus();
+    Toast.warning('Koneksi terputus. Mode offline aktif.');
+});
+
+// Initial check
+updateSystemStatus();
+</script>
+<?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Pribadi\LYNK\Template\web-kasir-makanan\resources\views/dashboard/index.blade.php ENDPATH**/ ?>
