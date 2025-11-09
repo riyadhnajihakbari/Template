@@ -8,8 +8,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <!-- Menu Items -->
-        <div class="lg:col-span-2 space-y-6">
-            <!-- Menu Grid Card -->
+        <div class="lg:col-span-2">
             <div class="modern-card p-6">
                 <div class="mb-4">
                     <input type="text" id="search-menu" placeholder="🔍 Cari menu..." 
@@ -64,15 +63,11 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
-
-            <!-- Receipt Preview - BARU -->
-            <div id="receipt-preview" class="hidden">
-                <!-- Preview will be inserted here by JavaScript -->
-            </div>
         </div>
 
-        <!-- Cart -->
-        <div class="lg:col-span-1">
+        <!-- Cart & Receipt Preview -->
+        <div class="lg:col-span-1 space-y-6">
+            <!-- Cart -->
             <div class="modern-card p-6 sticky top-6">
                 <h3 class="text-xl font-bold mb-4 text-gray-800">🛒 Pesanan</h3>
                 
@@ -127,6 +122,11 @@
                         🗑️ Bersihkan
                     </button>
                 </div>
+            </div>
+
+            <!-- Receipt Preview - DI BAWAH PESANAN -->
+            <div id="receipt-preview" class="hidden">
+                <!-- Preview will be inserted here by JavaScript -->
             </div>
         </div>
     </div>

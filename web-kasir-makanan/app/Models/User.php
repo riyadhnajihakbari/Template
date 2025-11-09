@@ -53,4 +53,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class, 'created_by');
     }
+    public function isPelanggan()
+    {
+    return $this->role === 'pelanggan';
+    }
 }

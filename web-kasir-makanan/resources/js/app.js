@@ -15,47 +15,39 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Online/Offline Status - HANYA UPDATE CARD, TIDAK ADA BANNER
+// Online/Offline Status
 window.addEventListener('online', () => {
-    // Update status di dashboard jika ada
     if (typeof updateSystemStatus === 'function') {
         updateSystemStatus();
     }
     
-    // Update dot di sidebar
     const connectionDot = document.getElementById('connection-status');
     if (connectionDot) {
         connectionDot.className = 'w-2 h-2 bg-green-500 rounded-full animate-pulse';
     }
     
-    // Sync offline transactions
     syncOfflineTransactions();
     
-    // Show toast
     if (typeof Toast !== 'undefined') {
-        Toast.success('Koneksi kembali online! Data akan disinkronkan.');
+        Toast.success('Koneksi kembali online!');
     }
 });
 
 window.addEventListener('offline', () => {
-    // Update status di dashboard jika ada
     if (typeof updateSystemStatus === 'function') {
         updateSystemStatus();
     }
     
-    // Update dot di sidebar
     const connectionDot = document.getElementById('connection-status');
     if (connectionDot) {
         connectionDot.className = 'w-2 h-2 bg-red-500 rounded-full animate-pulse';
     }
     
-    // Show toast
     if (typeof Toast !== 'undefined') {
-        Toast.warning('Koneksi terputus. Mode offline aktif.');
+        Toast.warning('Mode offline aktif.');
     }
 });
 
-// Check initial status
 if (!navigator.onLine) {
     const connectionDot = document.getElementById('connection-status');
     if (connectionDot) {
@@ -63,16 +55,14 @@ if (!navigator.onLine) {
     }
 }
 
-// Format currency helper - Make it global
 window.formatRupiah = function(amount) {
     const num = parseFloat(amount) || 0;
     return new Intl.NumberFormat('id-ID').format(num);
 }
 
-// Global POS Functions
 window.POS = {
     currentOrderType: 'takeaway',
-    lastOrderId: null, // Track last order for receipt preview
+    lastOrderId: null,
     
     setOrderType: function(type) {
         this.currentOrderType = type;
@@ -86,7 +76,7 @@ window.POS = {
             btnDineIn.className = 'px-4 py-3 rounded-lg border-2 border-pos-primary bg-pos-primary bg-opacity-10 transition-all';
             btnTakeaway.className = 'px-4 py-3 rounded-lg border-2 border-gray-300 hover:border-pos-primary transition-all';
             tableLabel.textContent = 'Nomor Meja';
-            tableInput.placeholder = 'Contoh: Meja 5';
+            tableInput.placeholder = 'Contoh: 5';
             tableInput.value = '';
         } else {
             btnDineIn.className = 'px-4 py-3 rounded-lg border-2 border-gray-300 hover:border-pos-primary transition-all';
@@ -247,10 +237,8 @@ window.POS = {
         await db.cart.clear();
         this.updateCartDisplay();
         
-        // Show receipt preview
         this.showReceiptPreview(orderId);
         
-        // Try to sync if online
         if (navigator.onLine) {
             syncOfflineTransactions();
         }
@@ -260,7 +248,6 @@ window.POS = {
         return orderId;
     },
     
-    // NEW: Show receipt preview in page
     showReceiptPreview: async function(orderId) {
         const order = await db.orders.get(orderId);
         const previewContainer = document.getElementById('receipt-preview');
@@ -364,12 +351,12 @@ window.POS = {
         }
     },
     
-    // Print receipt - RAPI
+    // Print receipt - COMPACT untuk thermal 58mm
     printReceipt: async function(orderId) {
         const order = await db.orders.get(orderId);
         
         const orderTypeLabel = order.order_type === 'dine_in' ? 'Dine In' : 'Take Away';
-        const orderTypeIcon = order.order_type === 'dine_in' ? '🍽️' : '🥡';
+        const orderTypeIcon = order.order_type === 'dine_in' ? 'DINE IN' : 'TAKE AWAY';
         
         const receiptWindow = window.open('', '_blank');
         receiptWindow.document.write(`
@@ -380,8 +367,8 @@ window.POS = {
                 <title>Struk #${order.order_number}</title>
                 <style>
                     @page {
-                        size: 80mm auto;
-                        margin: 0;
+                        size: 58mm auto;
+                        margin: 2mm;
                     }
                     
                     * {
@@ -392,149 +379,119 @@ window.POS = {
                     
                     body {
                         font-family: 'Courier New', monospace;
-                        width: 80mm;
-                        padding: 10mm;
-                        font-size: 11pt;
-                        line-height: 1.4;
+                        width: 58mm;
+                        padding: 2mm;
+                        font-size: 8pt;
+                        line-height: 1.3;
                     }
                     
                     .header {
                         text-align: center;
-                        margin-bottom: 10px;
-                        padding-bottom: 10px;
+                        margin-bottom: 3mm;
                     }
                     
-                    .header .shop-name {
-                        font-size: 16pt;
+                    .shop-name {
+                        font-size: 10pt;
                         font-weight: bold;
-                        margin-bottom: 5px;
+                        margin-bottom: 1mm;
                     }
                     
-                    .header .shop-info {
-                        font-size: 9pt;
-                        line-height: 1.3;
+                    .shop-info {
+                        font-size: 7pt;
+                        line-height: 1.2;
                     }
                     
                     .divider {
                         border-top: 1px dashed #000;
-                        margin: 10px 0;
-                    }
-                    
-                    .divider-solid {
-                        border-top: 2px solid #000;
-                        margin: 10px 0;
+                        margin: 2mm 0;
                     }
                     
                     .order-type {
                         text-align: center;
-                        font-size: 14pt;
+                        font-size: 9pt;
                         font-weight: bold;
-                        padding: 8px;
-                        background: #f0f0f0;
-                        border-radius: 5px;
-                        margin: 10px 0;
+                        padding: 2mm;
+                        border: 1px solid #000;
+                        margin: 2mm 0;
                     }
                     
                     .info-row {
                         display: flex;
                         justify-content: space-between;
-                        margin: 3px 0;
-                        font-size: 10pt;
-                    }
-                    
-                    .info-label {
-                        font-weight: normal;
-                    }
-                    
-                    .info-value {
-                        font-weight: bold;
-                        text-align: right;
-                    }
-                    
-                    .items {
-                        margin: 10px 0;
+                        margin: 1mm 0;
+                        font-size: 7pt;
                     }
                     
                     .item {
-                        margin: 8px 0;
+                        margin: 2mm 0;
                     }
                     
                     .item-name {
                         font-weight: bold;
-                        margin-bottom: 2px;
+                        font-size: 8pt;
                     }
                     
                     .item-detail {
                         display: flex;
                         justify-content: space-between;
-                        font-size: 10pt;
-                    }
-                    
-                    .total-section {
-                        margin-top: 10px;
+                        font-size: 7pt;
                     }
                     
                     .total-row {
                         display: flex;
                         justify-content: space-between;
-                        margin: 5px 0;
-                        font-size: 11pt;
+                        margin: 1mm 0;
+                        font-size: 8pt;
                     }
                     
                     .total-row.main {
-                        font-size: 13pt;
+                        font-size: 10pt;
                         font-weight: bold;
-                        padding-top: 5px;
+                        padding-top: 1mm;
                     }
                     
                     .footer {
                         text-align: center;
-                        margin-top: 15px;
-                        font-size: 10pt;
-                    }
-                    
-                    .footer-message {
-                        margin: 5px 0;
+                        margin-top: 3mm;
+                        font-size: 7pt;
                     }
                     
                     @media print {
                         body {
-                            padding: 5mm;
+                            padding: 0;
                         }
                     }
                 </style>
             </head>
             <body>
                 <div class="header">
-                    <div class="shop-name">RUMAH MAKAN SEDERHANA</div>
+                    <div class="shop-name">RUMAH MAKAN<br>SEDERHANA</div>
                     <div class="shop-info">
                         Jl. Contoh No. 123<br>
                         Telp: 0812-3456-7890
                     </div>
                 </div>
                 
-                <div class="divider-solid"></div>
-                
-                <div class="order-type">
-                    ${orderTypeIcon} ${orderTypeLabel}
-                </div>
-                
                 <div class="divider"></div>
                 
+                <div class="order-type">
+                    ${orderTypeIcon}
+                </div>
+                
                 <div class="info-row">
-                    <span class="info-label">No. Order</span>
-                    <span class="info-value">${order.order_number}</span>
+                    <span>No:</span>
+                    <span>${order.order_number}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">${order.order_type === 'dine_in' ? 'Meja' : 'Nama'}</span>
-                    <span class="info-value">${order.table_number}</span>
+                    <span>${order.order_type === 'dine_in' ? 'Meja' : 'Nama'}:</span>
+                    <span>${order.table_number}</span>
                 </div>
                 <div class="info-row">
-                    <span class="info-label">Tanggal</span>
-                    <span class="info-value">${new Date(order.created_at).toLocaleString('id-ID', {
+                    <span>Tgl:</span>
+                    <span>${new Date(order.created_at).toLocaleString('id-ID', {
                         day: '2-digit',
                         month: '2-digit',
-                        year: 'numeric',
+                        year: '2-digit',
                         hour: '2-digit',
                         minute: '2-digit'
                     })}</span>
@@ -542,42 +499,36 @@ window.POS = {
                 
                 <div class="divider"></div>
                 
-                <div class="items">
-                    ${order.items.map(item => `
-                        <div class="item">
-                            <div class="item-name">${item.name}</div>
-                            <div class="item-detail">
-                                <span>${item.qty} x Rp ${new Intl.NumberFormat('id-ID').format(item.unit_price)}</span>
-                                <span>Rp ${new Intl.NumberFormat('id-ID').format(item.subtotal)}</span>
-                            </div>
+                ${order.items.map(item => `
+                    <div class="item">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-detail">
+                            <span>${item.qty} x ${new Intl.NumberFormat('id-ID').format(item.unit_price)}</span>
+                            <span>${new Intl.NumberFormat('id-ID').format(item.subtotal)}</span>
                         </div>
-                    `).join('')}
+                    </div>
+                `).join('')}
+                
+                <div class="divider"></div>
+                
+                <div class="total-row main">
+                    <span>TOTAL</span>
+                    <span>${new Intl.NumberFormat('id-ID').format(order.total_amount)}</span>
                 </div>
-                
-                <div class="divider-solid"></div>
-                
-                <div class="total-section">
-                    <div class="total-row main">
-                        <span>TOTAL</span>
-                        <span>Rp ${new Intl.NumberFormat('id-ID').format(order.total_amount)}</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Bayar (${order.payment_method})</span>
-                        <span>Rp ${new Intl.NumberFormat('id-ID').format(order.paid_amount)}</span>
-                    </div>
-                    <div class="total-row">
-                        <span>Kembalian</span>
-                        <span>Rp ${new Intl.NumberFormat('id-ID').format(order.change_amount)}</span>
-                    </div>
+                <div class="total-row">
+                    <span>Bayar (${order.payment_method})</span>
+                    <span>${new Intl.NumberFormat('id-ID').format(order.paid_amount)}</span>
+                </div>
+                <div class="total-row">
+                    <span>Kembali</span>
+                    <span>${new Intl.NumberFormat('id-ID').format(order.change_amount)}</span>
                 </div>
                 
                 <div class="divider"></div>
                 
                 <div class="footer">
-                    <div class="footer-message">Terima Kasih</div>
-                    <div class="footer-message" style="font-weight: bold;">
-                        ${order.order_type === 'dine_in' ? 'Selamat Makan! 😊' : 'Selamat Menikmati! 😊'}
-                    </div>
+                    Terima Kasih<br>
+                    <strong>${order.order_type === 'dine_in' ? 'Selamat Makan!' : 'Selamat Menikmati!'}</strong>
                 </div>
             </body>
             </html>
@@ -592,7 +543,6 @@ window.POS = {
     }
 };
 
-// Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof POS !== 'undefined') {
         POS.updateCartDisplay();

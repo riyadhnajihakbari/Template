@@ -128,24 +128,52 @@ class MenuController extends Controller
 
     public function destroy(MenuItem $menuItem)
     {
-        // Delete photo if exists
-        if ($menuItem->photo_url) {
-            $photoPath = public_path($menuItem->photo_url);
-            if (File::exists($photoPath)) {
-                File::delete($photoPath);
+        try {
+            // Delete photo if exists
+            if ($menuItem->photo_url) {
+                $photoPath = public_path($menuItem->photo_url);
+                if (File::exists($photoPath)) {
+                    File::delete($photoPath);
+                }
             }
+            
+            $menuItem->delete();
+            
+            return redirect()->route('menu.index')->with('success', 'Menu berhasil dihapus');
+        } catch (\Exception $e) {
+            return redirect()->route('menu.index')->with('error', 'Gagal menghapus menu: ' . $e->getMessage());
         }
-        
-        $menuItem->delete();
-        
-        return redirect()->route('menu.index')->with('success', 'Menu berhasil dihapus');
     }
 
     public function toggleStatus(MenuItem $menuItem)
     {
-        $menuItem->update(['is_active' => !$menuItem->is_active]);
-        
-        $status = $menuItem->is_active ? 'aktif' : 'nonaktif';
-        return back()->with('success', "Menu berhasil diubah menjadi {$status}");
+        try {
+            $menuItem->update(['is_active' => !$menuItem->is_active]);
+            
+            $status = $menuItem->is_active ? 'aktif' : 'nonaktif';
+            
+            // Return JSON response for AJAX
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "Menu berhasil diubah menjadi {$status}",
+                    'is_active' => $menuItem->is_active
+                ]);
+            }
+            
+            // Return redirect for normal form submission
+            return back()->with('success', "Menu berhasil diubah menjadi {$status}");
+        } catch (\Exception $e) {
+            // Return JSON response for AJAX
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal mengubah status menu: ' . $e->getMessage()
+                ], 500);
+            }
+            
+            // Return redirect for normal form submission
+            return back()->with('error', 'Gagal mengubah status menu: ' . $e->getMessage());
+        }
     }
 }

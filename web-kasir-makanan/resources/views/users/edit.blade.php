@@ -21,6 +21,42 @@
             @csrf
             @method('PUT')
 
+            <!-- Current Role Badge -->
+            <div class="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600 mb-1">Role Saat Ini:</p>
+                        <p class="text-xl font-bold text-purple-700">
+                            @switch($user->role)
+                                @case('admin')
+                                    👑 Admin
+                                    @break
+                                @case('manajer')
+                                    📊 Manajer
+                                    @break
+                                @case('kasir')
+                                    💰 Kasir
+                                    @break
+                                @case('koki')
+                                    👨‍🍳 Koki
+                                    @break
+                                @case('pelanggan')
+                                    👤 Pelanggan
+                                    @break
+                                @default
+                                    {{ ucfirst($user->role) }}
+                            @endswitch
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">Status:</p>
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700">
+                            ✓ Aktif
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Name -->
             <div>
                 <label for="name" class="block text-sm font-bold text-gray-700 mb-2">
@@ -69,10 +105,18 @@
                     <option value="manajer" {{ old('role', $user->role) === 'manajer' ? 'selected' : '' }}>📊 Manajer - Kelola Menu & Laporan</option>
                     <option value="kasir" {{ old('role', $user->role) === 'kasir' ? 'selected' : '' }}>💰 Kasir - POS & Transaksi</option>
                     <option value="koki" {{ old('role', $user->role) === 'koki' ? 'selected' : '' }}>👨‍🍳 Koki - Dapur</option>
+                    <option value="pelanggan" {{ old('role', $user->role) === 'pelanggan' ? 'selected' : '' }}>👤 Pelanggan - Lihat Menu & Harga</option>
                 </select>
                 @error('role')
                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
+                
+                @if($user->role !== 'pelanggan' && old('role', $user->role) !== 'pelanggan')
+                <p class="mt-2 text-sm text-amber-600 flex items-start gap-2">
+                    <span>⚠️</span>
+                    <span>Mengubah ke role "Pelanggan" akan membatasi akses user hanya untuk melihat menu</span>
+                </p>
+                @endif
             </div>
 
             <!-- Password (Optional) -->
@@ -114,11 +158,42 @@
                     <div class="flex-shrink-0">
                         <span class="text-2xl">👤</span>
                     </div>
+                    <div class="ml-3 flex-1">
+                        <h3 class="text-sm font-semibold text-orange-800 mb-2">Informasi User:</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-orange-700">
+                            <div>
+                                <strong>Bergabung:</strong> {{ $user->created_at->format('d F Y') }}
+                            </div>
+                            <div>
+                                <strong>Update Terakhir:</strong> {{ $user->updated_at->format('d F Y H:i') }}
+                            </div>
+                            @if($user->email_verified_at)
+                            <div class="col-span-2">
+                                <strong>Email Terverifikasi:</strong> 
+                                <span class="inline-flex items-center gap-1">
+                                    <span class="text-green-600">✓</span> Ya
+                                </span>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Role Access Info -->
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-lg">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl">ℹ️</span>
+                    </div>
                     <div class="ml-3">
-                        <h3 class="text-sm font-semibold text-orange-800 mb-1">Informasi User:</h3>
-                        <ul class="text-sm text-orange-700 space-y-1">
-                            <li><strong>Bergabung:</strong> {{ $user->created_at->format('d F Y') }}</li>
-                            <li><strong>Terakhir Update:</strong> {{ $user->updated_at->format('d F Y H:i') }}</li>
+                        <h3 class="text-sm font-semibold text-blue-800 mb-2">Akses Berdasarkan Role:</h3>
+                        <ul class="text-sm text-blue-700 space-y-1">
+                            <li><strong>👑 Admin:</strong> Dashboard, POS, Menu, Laporan, User Management</li>
+                            <li><strong>📊 Manajer:</strong> Dashboard, POS, Menu, Laporan</li>
+                            <li><strong>💰 Kasir:</strong> Dashboard, POS</li>
+                            <li><strong>👨‍🍳 Koki:</strong> Dashboard, POS (view only)</li>
+                            <li><strong>👤 Pelanggan:</strong> Menu & Harga (read only)</li>
                         </ul>
                     </div>
                 </div>
@@ -140,19 +215,63 @@
         <!-- Delete Button -->
         @if($user->id !== auth()->id())
         <div class="mt-8 pt-8 border-t-2 border-gray-200">
-            <h3 class="text-lg font-bold text-red-600 mb-4">Danger Zone</h3>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg mb-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl">⚠️</span>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-semibold text-red-800 mb-1">Danger Zone</h3>
+                        <p class="text-sm text-red-700">
+                            Menghapus user akan menghapus semua data terkait. Tindakan ini tidak dapat dibatalkan!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
             <form method="POST" action="{{ route('users.destroy', $user) }}" 
-                  onsubmit="return confirm('Yakin ingin menghapus user ini? Tindakan ini tidak dapat dibatalkan!')" 
+                  onsubmit="return confirm('⚠️ PERINGATAN!\n\nYakin ingin menghapus user {{ $user->name }}?\n\nSemua data transaksi dan aktivitas user ini akan hilang.\n\nTindakan ini TIDAK DAPAT dibatalkan!')" 
                   class="inline">
                 @csrf
                 @method('DELETE')
                 <button type="submit" 
-                        class="px-6 py-3 rounded-lg bg-red-100 text-red-600 font-bold hover:bg-red-200 transition-all">
-                    🗑️ Hapus User
+                        class="px-6 py-3 rounded-lg bg-red-600 text-white font-bold hover:bg-red-700 transition-all shadow-md hover:shadow-lg">
+                    🗑️ Hapus User Permanen
                 </button>
             </form>
+        </div>
+        @else
+        <div class="mt-8 pt-8 border-t-2 border-gray-200">
+            <div class="bg-gray-50 border-l-4 border-gray-400 p-4 rounded-lg">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <span class="text-2xl">🔒</span>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-gray-700">
+                            Anda tidak dapat menghapus akun Anda sendiri yang sedang aktif untuk keamanan sistem.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script>
+// Warning when changing to pelanggan role
+document.getElementById('role')?.addEventListener('change', function() {
+    const currentRole = '{{ $user->role }}';
+    const newRole = this.value;
+    
+    if (currentRole !== 'pelanggan' && newRole === 'pelanggan') {
+        if (!confirm('⚠️ Perhatian!\n\nMengubah role ke "Pelanggan" akan:\n- Menghapus akses ke Dashboard\n- Menghapus akses ke POS\n- Hanya bisa melihat menu dan harga\n\nLanjutkan?')) {
+            this.value = currentRole;
+        }
+    }
+});
+</script>
+@endpush
 @endsection

@@ -257,24 +257,23 @@
             transform: translateY(0);
         }
 
-        /* Scrollbar */
+        /* Scrollbar - DEFAULT STYLE (NO COLOR) */
         ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
         }
 
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 10px;
+            background: #f1f1f1;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
-            border-radius: 10px;
+            background: #888;
+            border-radius: 6px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #E55A2B 0%, #D84A1B 100%);
+            background: #555;
         }
 
         /* Animations */
@@ -457,7 +456,7 @@
     </style>
 </head>
 <body class="bg-gray-50">
-    <!-- Toast Container - TIDAK ADA OFFLINE BANNER -->
+    <!-- Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
     <div class="min-h-screen flex">
@@ -570,7 +569,6 @@
 
                 container.appendChild(toast);
 
-                // Auto remove
                 setTimeout(() => {
                     toast.classList.add('hiding');
                     setTimeout(() => toast.remove(), 300);
@@ -594,7 +592,6 @@
             }
         };
 
-        // Show Laravel session messages as toasts
         <?php if(session('success')): ?>
             Toast.success('<?php echo e(session('success')); ?>');
         <?php endif; ?>

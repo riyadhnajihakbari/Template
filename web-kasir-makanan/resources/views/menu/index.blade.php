@@ -15,12 +15,12 @@
     <div class="card mb-6">
         <div class="flex items-center space-x-2 overflow-x-auto">
             <a href="{{ route('menu.index') }}" 
-               class="px-4 py-2 rounded-lg {{ !request('category') ? 'bg-pos-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }} whitespace-nowrap">
+               class="px-4 py-2 rounded-lg {{ !request('category') ? 'bg-pos-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }} whitespace-nowrap transition-all">
                 Semua
             </a>
             @foreach($categories as $category)
             <a href="{{ route('menu.index', ['category' => $category->id]) }}" 
-               class="px-4 py-2 rounded-lg {{ request('category') == $category->id ? 'bg-pos-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }} whitespace-nowrap">
+               class="px-4 py-2 rounded-lg {{ request('category') == $category->id ? 'bg-pos-primary text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300' }} whitespace-nowrap transition-all">
                 {{ $category->name }}
             </a>
             @endforeach
@@ -44,14 +44,15 @@
                 </thead>
                 <tbody class="divide-y divide-gray-200">
                     @forelse($menuItems as $item)
-                    <tr class="hover:bg-gray-50">
+                    <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-6 py-4">
                             @if($item->photo_url)
-                            <img src="{{ asset('storage/' . $item->photo_url) }}" 
+                            <img src="{{ asset($item->photo_url) }}" 
                                  alt="{{ $item->name }}" 
-                                 class="w-16 h-16 object-cover rounded-lg">
+                                 class="w-16 h-16 object-cover rounded-lg shadow-sm"
+                                 onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-2xl\'>🍽️</div>';">
                             @else
-                            <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center text-2xl">
+                            <div class="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg flex items-center justify-center text-2xl shadow-sm">
                                 🍽️
                             </div>
                             @endif
@@ -63,7 +64,7 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
                                 {{ $item->category->name }}
                             </span>
                         </td>
@@ -80,27 +81,29 @@
                             @endif
                         </td>
                         <td class="px-6 py-4">
-                            <form action="{{ route('menu.toggle-status', $item) }}" method="POST">
+                            <form action="{{ route('menu.toggle-status', $item->id) }}" method="POST" class="toggle-status-form">
                                 @csrf
-                                <button type="submit" class="px-3 py-1 rounded-full text-sm font-semibold {{ $item->is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
+                                <button type="submit" class="px-3 py-1 rounded-full text-sm font-semibold transition-all {{ $item->is_active ? 'bg-green-100 text-green-800 hover:bg-green-200' : 'bg-gray-100 text-gray-800 hover:bg-gray-200' }}">
                                     {{ $item->is_active ? '✓ Aktif' : '✗ Nonaktif' }}
                                 </button>
                             </form>
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex items-center space-x-2">
-                                <a href="{{ route('menu.edit', $item) }}" 
-                                   class="text-blue-600 hover:text-blue-800 font-semibold">
+                                <a href="{{ route('menu.edit', $item->id) }}" 
+                                   class="text-blue-600 hover:text-blue-800 font-semibold transition-colors">
                                     ✏️ Edit
                                 </a>
-                                <form action="{{ route('menu.destroy', $item) }}" 
+                                <button onclick="confirmDelete('{{ $item->id }}', '{{ $item->name }}')" 
+                                        class="text-red-600 hover:text-red-800 font-semibold transition-colors">
+                                    🗑️ Hapus
+                                </button>
+                                <form id="delete-form-{{ $item->id }}" 
+                                      action="{{ route('menu.destroy', $item->id) }}" 
                                       method="POST" 
-                                      onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
+                                      class="hidden">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-800 font-semibold">
-                                        🗑️ Hapus
-                                    </button>
                                 </form>
                             </div>
                         </td>
@@ -129,4 +132,118 @@
         @endif
     </div>
 </div>
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+// Show success message if exists
+@if(session('success'))
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil!',
+        text: '{{ session('success') }}',
+        showConfirmButton: false,
+        timer: 2000,
+        toast: true,
+        position: 'top-end',
+        timerProgressBar: true
+    });
+@endif
+
+// Show error message if exists
+@if(session('error'))
+    Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: '{{ session('error') }}',
+        showConfirmButton: true
+    });
+@endif
+
+// Confirm delete with SweetAlert2
+function confirmDelete(menuId, menuName) {
+    Swal.fire({
+        title: 'Hapus Menu?',
+        html: `Yakin ingin menghapus menu <strong>${menuName}</strong>?<br><small class="text-gray-500">Tindakan ini tidak dapat dibatalkan</small>`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: '🗑️ Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        focusCancel: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Show loading
+            Swal.fire({
+                title: 'Menghapus...',
+                html: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            
+            // Submit form
+            document.getElementById('delete-form-' + menuId).submit();
+        }
+    });
+}
+
+// Handle toggle status with AJAX
+document.querySelectorAll('.toggle-status-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const url = this.action;
+        
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: data.message || 'Status menu berhasil diubah',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    toast: true,
+                    position: 'top-end'
+                });
+                
+                // Reload page after 1 second
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: data.message || 'Gagal mengubah status menu',
+                    confirmButtonText: 'OK'
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Terjadi kesalahan saat mengubah status',
+                confirmButtonText: 'OK'
+            });
+        });
+    });
+});
+</script>
+@endpush
 @endsection

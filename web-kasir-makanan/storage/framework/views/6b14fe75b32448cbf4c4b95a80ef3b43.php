@@ -25,6 +25,7 @@
                     <tr>
                         <th class="text-left rounded-tl-lg">Nama</th>
                         <th class="text-left">Email</th>
+                        <th class="text-left">Password</th>
                         <th class="text-left">Role</th>
                         <th class="text-left">Bergabung</th>
                         <th class="text-center rounded-tr-lg">Aksi</th>
@@ -51,6 +52,22 @@
                             </div>
                         </td>
                         <td class="text-sm text-gray-600"><?php echo e($user->email); ?></td>
+                        <td class="text-sm">
+                            <div class="flex items-center gap-2">
+                                <span class="password-hidden font-mono text-gray-600" data-user="<?php echo e($user->id); ?>">
+                                    ••••••••
+                                </span>
+                                <span class="password-shown font-mono text-gray-800 font-semibold hidden" data-user="<?php echo e($user->id); ?>">
+                                    <?php echo e($user->plain_password ?? 'password'); ?>
+
+                                </span>
+                                <button onclick="togglePassword(<?php echo e($user->id); ?>)" 
+                                        class="text-sm px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded transition-colors">
+                                    <span class="show-btn-<?php echo e($user->id); ?>">👁️</span>
+                                    <span class="hide-btn-<?php echo e($user->id); ?> hidden">🙈</span>
+                                </button>
+                            </div>
+                        </td>
                         <td>
                             <?php if($user->role === 'admin'): ?>
                             <span class="status-badge" style="background: linear-gradient(135deg, #fecaca 0%, #fca5a5 100%); color: #991b1b; border: 1px solid #f87171;">
@@ -102,7 +119,7 @@
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                     <tr>
-                        <td colspan="5" class="text-center py-12">
+                        <td colspan="6" class="text-center py-12">
                             <div class="flex flex-col items-center gap-3">
                                 <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center text-4xl">
                                     👥
@@ -170,6 +187,44 @@
             </div>
         </div>
     </div>
+
+    <!-- Info Box -->
+    <div class="mt-6 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-lg">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <span class="text-2xl">⚠️</span>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-semibold text-yellow-800 mb-1">Catatan Keamanan:</h3>
+                <p class="text-sm text-yellow-700">Password yang ditampilkan adalah password default. Untuk keamanan, sebaiknya user mengganti password setelah login pertama kali.</p>
+            </div>
+        </div>
+    </div>
 </div>
+
+<?php $__env->startPush('scripts'); ?>
+<script>
+function togglePassword(userId) {
+    const hiddenEl = document.querySelector(`.password-hidden[data-user="${userId}"]`);
+    const shownEl = document.querySelector(`.password-shown[data-user="${userId}"]`);
+    const showBtn = document.querySelector(`.show-btn-${userId}`);
+    const hideBtn = document.querySelector(`.hide-btn-${userId}`);
+    
+    if (hiddenEl.classList.contains('hidden')) {
+        // Currently showing, hide it
+        hiddenEl.classList.remove('hidden');
+        shownEl.classList.add('hidden');
+        showBtn.classList.remove('hidden');
+        hideBtn.classList.add('hidden');
+    } else {
+        // Currently hidden, show it
+        hiddenEl.classList.add('hidden');
+        shownEl.classList.remove('hidden');
+        showBtn.classList.add('hidden');
+        hideBtn.classList.remove('hidden');
+    }
+}
+</script>
+<?php $__env->stopPush(); ?>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\Pribadi\LYNK\Template\web-kasir-makanan\resources\views/users/index.blade.php ENDPATH**/ ?>

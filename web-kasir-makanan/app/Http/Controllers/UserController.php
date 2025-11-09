@@ -32,10 +32,12 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,manajer,kasir,koki',
+            'role' => 'required|in:admin,manajer,kasir,koki,pelanggan',
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        $plainPassword = $validated['password'];
+        $validated['plain_password'] = $plainPassword;
+        $validated['password'] = Hash::make($plainPassword);
 
         User::create($validated);
 
@@ -58,11 +60,13 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user->id)
             ],
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|in:admin,manajer,kasir,koki',
+            'role' => 'required|in:admin,manajer,kasir,koki,pelanggan',
         ]);
 
         if (!empty($validated['password'])) {
-            $validated['password'] = Hash::make($validated['password']);
+            $plainPassword = $validated['password'];
+            $validated['plain_password'] = $plainPassword;
+            $validated['password'] = Hash::make($plainPassword);
         } else {
             unset($validated['password']);
         }
@@ -75,12 +79,10 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        // Prevent deleting self
         if ($user->id === auth()->id()) {
             return back()->with('error', 'Tidak dapat menghapus akun sendiri!');
         }
 
-        // Prevent deleting last admin
         if ($user->isAdmin() && User::where('role', 'admin')->count() <= 1) {
             return back()->with('error', 'Tidak dapat menghapus admin terakhir!');
         }
@@ -93,7 +95,6 @@ class UserController extends Controller
 
     public function toggleStatus(User $user)
     {
-        // Prevent disabling self
         if ($user->id === auth()->id()) {
             return back()->with('error', 'Tidak dapat menonaktifkan akun sendiri!');
         }

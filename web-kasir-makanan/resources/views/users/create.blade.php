@@ -68,6 +68,7 @@
                     <option value="manajer" {{ old('role') === 'manajer' ? 'selected' : '' }}>📊 Manajer - Kelola Menu & Laporan</option>
                     <option value="kasir" {{ old('role') === 'kasir' ? 'selected' : '' }}>💰 Kasir - POS & Transaksi</option>
                     <option value="koki" {{ old('role') === 'koki' ? 'selected' : '' }}>👨‍🍳 Koki - Dapur</option>
+                    <option value="pelanggan" {{ old('role') === 'pelanggan' ? 'selected' : '' }}>👤 Pelanggan - Lihat Menu & Harga</option>
                 </select>
                 @error('role')
                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
@@ -110,12 +111,13 @@
                         <span class="text-2xl">ℹ️</span>
                     </div>
                     <div class="ml-3">
-                        <h3 class="text-sm font-semibold text-blue-800 mb-1">Informasi Role:</h3>
+                        <h3 class="text-sm font-semibold text-blue-800 mb-2">Informasi Role:</h3>
                         <ul class="text-sm text-blue-700 space-y-1">
-                            <li><strong>Admin:</strong> Akses penuh ke semua fitur</li>
-                            <li><strong>Manajer:</strong> Kelola menu, laporan, dan user</li>
-                            <li><strong>Kasir:</strong> Akses POS dan transaksi</li>
-                            <li><strong>Koki:</strong> Lihat pesanan dapur</li>
+                            <li><strong>👑 Admin:</strong> Akses penuh ke semua fitur sistem</li>
+                            <li><strong>📊 Manajer:</strong> Kelola menu, laporan, dan manajemen user</li>
+                            <li><strong>💰 Kasir:</strong> Akses POS untuk transaksi dan penjualan</li>
+                            <li><strong>👨‍🍳 Koki:</strong> Melihat pesanan dapur dan status menu</li>
+                            <li><strong>👤 Pelanggan:</strong> Hanya dapat melihat menu dan harga (tidak ada akses POS)</li>
                         </ul>
                     </div>
                 </div>
@@ -135,4 +137,19 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+// Auto-fill email domain for pelanggan
+document.getElementById('role')?.addEventListener('change', function() {
+    const emailInput = document.getElementById('email');
+    if (this.value === 'pelanggan' && emailInput && !emailInput.value) {
+        // Optional: bisa ditambahkan logic untuk auto-suggest email format
+        emailInput.placeholder = 'contoh: pelanggan@email.com';
+    } else if (emailInput) {
+        emailInput.placeholder = 'email@example.com';
+    }
+});
+</script>
+@endpush
 @endsection
