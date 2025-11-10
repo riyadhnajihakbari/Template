@@ -2,53 +2,193 @@
 
 ## Overview
 ```
-web-kasir-makanan/
-├── app/                    # Core aplikasi Laravel
-│   ├── Http/
-│   │   ├── Controllers/    # Controllers untuk handle request
-│   │   └── Middleware/     # Middleware (autentikasi, role)
-│   └── Models/            # Eloquent Models (User, Order, Menu, dll)
-├── bootstrap/             # Bootstrap Laravel
-├── config/                # File konfigurasi
-├── database/              # Database migrations & seeders
-│   ├── migrations/        # Schema database
-│   └── seeders/          # Data awal (demo accounts, menu)
-├── public/                # Public assets & entry point
-│   ├── css/              # Compiled CSS
-│   ├── js/               # Compiled JavaScript
-│   ├── images/           # Images & icons
-│   ├── service-worker.js # PWA Service Worker
-│   ├── index.php         # Entry point aplikasi
-│   └── .htaccess         # Apache configuration
-├── resources/             # Source files
-│   ├── css/              # Tailwind CSS source
-│   ├── js/               # JavaScript source
-│   │   ├── app.js        # Main JS file
-│   │   ├── db.js         # IndexedDB setup
-│   │   ├── sync.js       # Offline sync logic
-│   │   └── bootstrap.js  # Axios setup
-│   └── views/            # Blade templates
-│       ├── layouts/      # Layout templates
-│       ├── auth/         # Login pages
-│       ├── dashboard/    # Dashboard views
-│       ├── pos/          # POS screen
-│       ├── menu/         # Menu management
-│       └── reports/      # Reports views
-├── routes/                # Route definitions
-│   └── web.php           # Web routes
-├── storage/               # Storage files
-│   ├── app/              # Uploaded files
-│   ├── framework/        # Cache, sessions
-│   └── logs/             # Log files
-├── .env.example          # Environment template
-├── composer.json         # PHP dependencies
-├── package.json          # Node dependencies
-├── tailwind.config.js    # Tailwind configuration
-├── vite.config.js        # Vite build configuration
-├── README.md             # Dokumentasi lengkap
-└── INSTALL.md            # Panduan instalasi cepat
-```
-
+WEB-KASIR-MAKANAN/
+│
+├── 📁 app/
+│   ├── 📁 Console/
+│   │   └── Kernel.php
+│   │
+│   ├── 📁 Exceptions/
+│   │   └── Handler.php
+│   │
+│   ├── 📁 Http/
+│   │   ├── 📁 Controllers/
+│   │   │   ├── AuthController.php
+│   │   │   ├── Controller.php
+│   │   │   ├── CustomerController.php
+│   │   │   ├── DashboardController.php
+│   │   │   ├── MenuController.php
+│   │   │   ├── POSController.php
+│   │   │   ├── ReportController.php
+│   │   │   └── UserController.php
+│   │   │
+│   │   └── 📁 Middleware/
+│   │       ├── Authenticate.php
+│   │       ├── EncryptCookies.php
+│   │       ├── PreventRequestsDuringMaintenance.php
+│   │       ├── RedirectIfAuthenticated.php
+│   │       ├── TrimStrings.php
+│   │       ├── TrustHosts.php
+│   │       ├── TrustProxies.php
+│   │       └── ValidateSignature.php
+│   │
+│   ├── 📁 Models/
+│   │   ├── Category.php
+│   │   ├── MenuItem.php
+│   │   ├── Order.php
+│   │   ├── OrderItem.php
+│   │   ├── Transaction.php
+│   │   └── User.php
+│   │
+│   └── 📁 Providers/
+│       ├── AppServiceProvider.php
+│       ├── AuthServiceProvider.php
+│       ├── BroadcastServiceProvider.php
+│       ├── EventServiceProvider.php
+│       └── RouteServiceProvider.php
+│
+├── 📁 bootstrap/
+│   ├── app.php
+│   └── cache/
+│
+├── 📁 config/
+│   ├── app.php
+│   ├── auth.php
+│   ├── cache.php
+│   ├── database.php
+│   ├── filesystems.php
+│   ├── logging.php
+│   ├── mail.php
+│   ├── queue.php
+│   ├── services.php
+│   ├── session.php
+│   └── view.php
+│
+├── 📁 database/
+│   ├── 📁 factories/
+│   │   └── UserFactory.php
+│   │
+│   ├── 📁 migrations/
+│   │   ├── 2024_01_01_000001_create_users_table.php
+│   │   ├── 2024_01_01_000002_create_categories_table.php
+│   │   ├── 2024_01_01_000003_create_menu_items_table.php
+│   │   ├── 2024_01_01_000004_create_orders_table.php
+│   │   ├── 2024_01_01_000005_create_order_items_table.php
+│   │   ├── 2024_01_01_000006_create_transactions_table.php
+│   │   └── 2025_11_09_001120_add_order_type_to_orders_table.php
+│   │
+│   ├── 📁 seeders/
+│   │   ├── CategorySeeder.php
+│   │   ├── CustomerUserSeeder.php
+│   │   ├── DatabaseSeeder.php
+│   │   └── MenuItemSeeder.php
+│   │
+│   └── .gitignore
+│
+├── 📁 public/
+│   ├── 📁 build/
+│   │   ├── 📁 assets/
+│   │   └── manifest.json
+│   │
+│   ├── 📁 storage/
+│   │   ├── 📁 menu-photos/
+│   │   │   ├── nasi-goreng.jpg
+│   │   │   ├── mie-goreng.jpg
+│   │   │   └── ...
+│   │   └── .gitignore
+│   │
+│   ├── .htaccess
+│   ├── favicon.ico
+│   ├── index.php
+│   ├── manifest.json          ← PWA Manifest
+│   ├── robots.txt
+│   └── service-worker.js      ← PWA Service Worker
+│
+├── 📁 resources/
+│   ├── 📁 css/
+│   │   └── app.css ⚠️ (Styling utama)
+│   │
+│   ├── 📁 js/
+│   │   ├── app.js ⚠️ (PWA, Toast, POS Logic)
+│   │   ├── bootstrap.js
+│   │   ├── db.js              ← IndexedDB (Offline)
+│   │   └── sync.js            ← Sync offline data
+│   │
+│   └── 📁 views/
+│       ├── 📁 auth/
+│       │   └── login.blade.php
+│       │
+│       ├── 📁 customer/
+│       │   └── menu.blade.php
+│       │
+│       ├── 📁 dashboard/
+│       │   └── index.blade.php ⚠️
+│       │
+│       ├── 📁 layouts/
+│       │   ├── app.blade.php ⚠️ ⚠️ ⚠️ (FILE UTAMA YANG DIPERBAIKI!)
+│       │   └── customer.blade.php
+│       │
+│       ├── 📁 menu/
+│       │   ├── create.blade.php
+│       │   ├── edit.blade.php
+│       │   └── index.blade.php ⚠️
+│       │
+│       ├── 📁 pos/
+│       │   └── index.blade.php ⚠️
+│       │
+│       ├── 📁 reports/
+│       │   ├── inventory.blade.php
+│       │   └── sales.blade.php
+│       │
+│       └── 📁 users/
+│           ├── create.blade.php
+│           ├── edit.blade.php
+│           └── index.blade.php ⚠️
+│
+├── 📁 routes/
+│   ├── api.php
+│   ├── channels.php
+│   ├── console.php
+│   └── web.php ⚠️ (Route utama)
+│
+├── 📁 storage/
+│   ├── 📁 app/
+│   │   ├── 📁 public/
+│   │   │   └── 📁 menu-photos/
+│   │   └── .gitignore
+│   │
+│   ├── 📁 framework/
+│   │   ├── 📁 cache/
+│   │   ├── 📁 sessions/
+│   │   └── 📁 views/
+│   │
+│   └── 📁 logs/
+│       └── laravel.log
+│
+├── 📁 tests/
+│   ├── 📁 Feature/
+│   │   └── ExampleTest.php
+│   │
+│   └── 📁 Unit/
+│       └── ExampleTest.php
+│
+├── 📁 vendor/ (Composer dependencies)
+│
+├── .env ⚠️ (Konfigurasi database & app)
+├── .env.example
+├── .gitattributes
+├── .gitignore
+├── artisan
+├── composer.json
+├── composer.lock
+├── package.json ⚠️ (NPM dependencies)
+├── package-lock.json
+├── phpunit.xml
+├── postcss.config.js
+├── README.md
+├── tailwind.config.js ⚠️ (Tailwind CSS config)
+├── TROUBLESHOOTING.md
+└── vite.config.js ⚠️ (Vite bundler config)
 ## 🎯 File Penting
 
 ### Backend (PHP/Laravel)

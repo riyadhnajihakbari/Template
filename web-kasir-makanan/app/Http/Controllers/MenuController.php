@@ -6,15 +6,18 @@ use App\Models\MenuItem;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class MenuController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
         $query = MenuItem::with('category');
         
-        // Filter by category if provided
-        if ($request->has('category') && $request->category) {
+        if ($request->has('category')) {
             $query->where('category_id', $request->category);
         }
         
@@ -24,39 +27,33 @@ class MenuController extends Controller
         return view('menu.index', compact('menuItems', 'categories'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $categories = Category::where('is_active', true)->get();
-        
-        // If no categories, redirect to create category first
-        if ($categories->count() == 0) {
-            return redirect()->route('menu.index')
-                ->with('error', 'Silakan buat kategori terlebih dahulu');
-        }
-        
+        $categories = Category::all();
         return view('menu.create', compact('categories'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'description' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'is_active' => 'nullable|boolean',
         ]);
 
-        // Set default is_active
-        $validated['is_active'] = true;
-
-        // Handle photo upload - LANGSUNG KE PUBLIC
+        // Handle photo upload
         if ($request->hasFile('photo')) {
             $photo = $request->file('photo');
-            
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
             
             // Create directory if not exists
             $uploadPath = public_path('uploads/menu');
@@ -64,36 +61,56 @@ class MenuController extends Controller
                 File::makeDirectory($uploadPath, 0755, true);
             }
             
+            // Generate unique filename
+            $filename = time() . '_' . Str::slug($request->name) . '.' . $photo->getClientOriginalExtension();
+            
             // Move file to public/uploads/menu
             $photo->move($uploadPath, $filename);
             
-            // Save relative path (without 'public/')
+            // Save relative path to database
             $validated['photo_url'] = 'uploads/menu/' . $filename;
         }
-
+        
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
+        
         MenuItem::create($validated);
-
-        return redirect()->route('menu.index')->with('success', 'Menu berhasil ditambahkan');
+        
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil ditambahkan!');
     }
 
+    /**
+     * Display the specified resource.
+     */
+    public function show(MenuItem $menuItem)
+    {
+        return view('menu.show', compact('menuItem'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(MenuItem $menuItem)
     {
-        $categories = Category::where('is_active', true)->get();
+        $categories = Category::all();
         return view('menu.edit', compact('menuItem', 'categories'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, MenuItem $menuItem)
     {
         $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'description' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'is_active' => 'nullable|boolean',
         ]);
 
-        // Handle photo upload - LANGSUNG KE PUBLIC
+        // Handle photo upload
         if ($request->hasFile('photo')) {
             // Delete old photo if exists
             if ($menuItem->photo_url) {
@@ -105,75 +122,59 @@ class MenuController extends Controller
             
             $photo = $request->file('photo');
             
-            // Generate unique filename
-            $filename = time() . '_' . uniqid() . '.' . $photo->getClientOriginalExtension();
-            
             // Create directory if not exists
             $uploadPath = public_path('uploads/menu');
             if (!File::exists($uploadPath)) {
                 File::makeDirectory($uploadPath, 0755, true);
             }
             
+            // Generate unique filename
+            $filename = time() . '_' . Str::slug($request->name) . '.' . $photo->getClientOriginalExtension();
+            
             // Move file to public/uploads/menu
             $photo->move($uploadPath, $filename);
             
-            // Save relative path
+            // Save relative path to database
             $validated['photo_url'] = 'uploads/menu/' . $filename;
         }
-
+        
+        $validated['is_active'] = $request->has('is_active') ? 1 : 0;
+        
         $menuItem->update($validated);
-
-        return redirect()->route('menu.index')->with('success', 'Menu berhasil diupdate');
+        
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil diupdate!');
     }
 
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(MenuItem $menuItem)
     {
-        try {
-            // Delete photo if exists
-            if ($menuItem->photo_url) {
-                $photoPath = public_path($menuItem->photo_url);
-                if (File::exists($photoPath)) {
-                    File::delete($photoPath);
-                }
+        // Delete photo if exists
+        if ($menuItem->photo_url) {
+            $photoPath = public_path($menuItem->photo_url);
+            if (File::exists($photoPath)) {
+                File::delete($photoPath);
             }
-            
-            $menuItem->delete();
-            
-            return redirect()->route('menu.index')->with('success', 'Menu berhasil dihapus');
-        } catch (\Exception $e) {
-            return redirect()->route('menu.index')->with('error', 'Gagal menghapus menu: ' . $e->getMessage());
         }
+        
+        $menuItem->delete();
+        
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil dihapus!');
     }
 
+    /**
+     * Toggle menu status (active/inactive)
+     */
     public function toggleStatus(MenuItem $menuItem)
     {
-        try {
-            $menuItem->update(['is_active' => !$menuItem->is_active]);
-            
-            $status = $menuItem->is_active ? 'aktif' : 'nonaktif';
-            
-            // Return JSON response for AJAX
-            if (request()->ajax() || request()->wantsJson()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => "Menu berhasil diubah menjadi {$status}",
-                    'is_active' => $menuItem->is_active
-                ]);
-            }
-            
-            // Return redirect for normal form submission
-            return back()->with('success', "Menu berhasil diubah menjadi {$status}");
-        } catch (\Exception $e) {
-            // Return JSON response for AJAX
-            if (request()->ajax() || request()->wantsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Gagal mengubah status menu: ' . $e->getMessage()
-                ], 500);
-            }
-            
-            // Return redirect for normal form submission
-            return back()->with('error', 'Gagal mengubah status menu: ' . $e->getMessage());
-        }
+        $menuItem->is_active = !$menuItem->is_active;
+        $menuItem->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Status menu berhasil diubah!',
+            'is_active' => $menuItem->is_active
+        ]);
     }
 }

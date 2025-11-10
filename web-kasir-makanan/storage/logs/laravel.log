@@ -11168,3 +11168,20 @@
 #65 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(16): require_once('D:\\\\Pribadi\\\\LYNK...')
 #66 {main}
 "} 
+[2025-11-10 00:29:28] laravel.EMERGENCY: Unable to create configured logger. Using emergency logger. {"exception":"[object] (InvalidArgumentException(code: 0): Log [] is not defined. at D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php:212)
+[stacktrace]
+#0 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(137): Illuminate\\Log\\LogManager->resolve(NULL, NULL)
+#1 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(124): Illuminate\\Log\\LogManager->get(NULL)
+#2 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Log\\LogManager.php(681): Illuminate\\Log\\LogManager->driver()
+#3 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(317): Illuminate\\Log\\LogManager->error('Maximum executi...', Array)
+#4 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php(278): Illuminate\\Foundation\\Exceptions\\Handler->reportThrowable(Object(Symfony\\Component\\ErrorHandler\\Error\\FatalError))
+#5 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(183): Illuminate\\Foundation\\Exceptions\\Handler->report(Object(Symfony\\Component\\ErrorHandler\\Error\\FatalError))
+#6 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(231): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleException(Object(Symfony\\Component\\ErrorHandler\\Error\\FatalError))
+#7 D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php(255): Illuminate\\Foundation\\Bootstrap\\HandleExceptions->handleShutdown()
+#8 [internal function]: Illuminate\\Foundation\\Bootstrap\\HandleExceptions->Illuminate\\Foundation\\Bootstrap\\{closure}()
+#9 {main}
+"} 
+[2025-11-10 00:29:28] laravel.ERROR: Maximum execution time of 60 seconds exceeded {"userId":1,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Maximum execution time of 60 seconds exceeded at D:\\Pribadi\\LYNK\\Template\\web-kasir-makanan\\vendor\\laravel\\framework\\src\\Illuminate\\View\\View.php:19)
+[stacktrace]
+#0 {main}
+"} 

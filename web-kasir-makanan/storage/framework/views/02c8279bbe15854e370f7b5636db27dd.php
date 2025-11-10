@@ -465,8 +465,8 @@
         <aside class="w-64 modern-sidebar no-print">
             <div class="p-6 border-b border-gray-100">
                 <div class="flex items-center space-x-3 mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-2xl logo-pulse shadow-lg">
-                        🍽️
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl logo-pulse shadow-lg">
+                        <img src="<?php echo e(asset('uploads/images/Logo.png')); ?>" alt="Logo" class="w-16 h-16">
                     </div>
                     <div>
                         <h1 class="text-xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">Kasir Makanan</h1>

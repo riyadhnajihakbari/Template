@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title') - {{ config('app.name') }}</title>
+    <title><?php echo $__env->yieldContent('title'); ?> - <?php echo e(config('app.name')); ?></title>
     
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" href="<?php echo e(asset('favicon.ico')); ?>">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,13 +15,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Vite Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     
     <!-- Custom Styles -->
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-image: url('{{ asset('uploads/images/backgroundlogin.jpeg') }}');
+            background-image: url('<?php echo e(asset('uploads/images/backgroundlogin.jpeg')); ?>');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -214,22 +214,22 @@
         }
     </style>
     
-    @stack('styles')
+    <?php echo $__env->yieldPushContent('styles'); ?>
 </head>
 <body>
     <!-- Partikel lembut -->
     <div class="fixed inset-0 pointer-events-none" style="z-index: 1;">
-        @for ($i = 0; $i < 15; $i++)
+        <?php for($i = 0; $i < 15; $i++): ?>
             <div class="particle" 
                 style="
-                    width: {{ rand(4,10) }}px; 
-                    height: {{ rand(4,10) }}px; 
-                    top: {{ rand(0,100) }}%; 
-                    left: {{ rand(0,100) }}%; 
-                    animation-delay: {{ rand(0,10) / 2 }}s;
+                    width: <?php echo e(rand(4,10)); ?>px; 
+                    height: <?php echo e(rand(4,10)); ?>px; 
+                    top: <?php echo e(rand(0,100)); ?>%; 
+                    left: <?php echo e(rand(0,100)); ?>%; 
+                    animation-delay: <?php echo e(rand(0,10) / 2); ?>s;
                 ">
             </div>
-        @endfor
+        <?php endfor; ?>
     </div>
 
     <!-- Navbar -->
@@ -239,7 +239,7 @@
                 <!-- Logo -->
                 <div class="flex items-center space-x-3">
                     <div class="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl border-2 border-white/20">
-                        <img src="{{ asset('uploads/images/Logo.png') }}" alt="Logo" class="w-10 h-10 animate-pulse">
+                        <img src="<?php echo e(asset('uploads/images/Logo.png')); ?>" alt="Logo" class="w-10 h-10 animate-pulse">
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold text-white">Rumah Makan</h1>
@@ -251,12 +251,12 @@
                 <div class="flex items-center space-x-4">
                     <div class="text-right hidden sm:block">
                         <p class="text-sm text-gray-300">Selamat Datang,</p>
-                        <p class="font-semibold text-white">{{ Auth::user()->name }}</p>
+                        <p class="font-semibold text-white"><?php echo e(Auth::user()->name); ?></p>
                     </div>
                     
                     <!-- Logout -->
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
+                    <form action="<?php echo e(route('logout')); ?>" method="POST">
+                        <?php echo csrf_field(); ?>
                         <button type="submit" class="px-4 py-2 rounded-lg font-semibold transition-all"
                                 style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%); color: white; border: 2px solid rgba(255, 255, 255, 0.3);">
                             🚪 Keluar
@@ -269,7 +269,7 @@
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 pb-12 relative z-10">
-        @yield('content')
+        <?php echo $__env->yieldContent('content'); ?>
     </main>
 
     <!-- Footer -->
@@ -277,12 +277,12 @@
         <div class="container mx-auto px-4">
             <div class="bg-black/50 backdrop-blur-md rounded-2xl p-6 border border-white/20 inline-block">
                 <p class="text-sm opacity-75">
-                    © {{ date('Y') }} Rumah Makan Sederhana. All rights reserved.
+                    © <?php echo e(date('Y')); ?> Rumah Makan Sederhana. All rights reserved.
                 </p>
             </div>
         </div>
     </footer>
 
-    @stack('scripts')
+    <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
-</html>
+</html><?php /**PATH D:\Pribadi\LYNK\Template\web-kasir-makanan\resources\views/layouts/customer.blade.php ENDPATH**/ ?>

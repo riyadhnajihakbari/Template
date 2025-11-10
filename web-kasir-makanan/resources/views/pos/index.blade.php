@@ -38,9 +38,9 @@
                              onclick='POS.addToCart(@json($item))'>
                             <div class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl border-2 border-gray-100 hover:border-orange-300">
                                 @if($item->photo_url)
-                                <img src="{{ asset('storage/' . $item->photo_url) }}" 
-                                     alt="{{ $item->name }}" 
-                                     class="w-full h-32 object-cover rounded-lg mb-2">
+                                <img src="{{ asset('uploads/images/' . $item->photo_url) }}" 
+                                alt="{{ $item->name }}" 
+                                class="w-full h-32 object-cover rounded-lg mb-2">
                                 @else
                                 <div class="w-full h-32 bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg mb-2 flex items-center justify-center text-4xl">
                                     🍽️

@@ -37,9 +37,9 @@
                              onclick='POS.addToCart(<?php echo json_encode($item, 15, 512) ?>)'>
                             <div class="bg-white rounded-xl p-3 shadow-md hover:shadow-xl border-2 border-gray-100 hover:border-orange-300">
                                 <?php if($item->photo_url): ?>
-                                <img src="<?php echo e(asset('storage/' . $item->photo_url)); ?>" 
-                                     alt="<?php echo e($item->name); ?>" 
-                                     class="w-full h-32 object-cover rounded-lg mb-2">
+                                <img src="<?php echo e(asset('uploads/images/' . $item->photo_url)); ?>" 
+                                alt="<?php echo e($item->name); ?>" 
+                                class="w-full h-32 object-cover rounded-lg mb-2">
                                 <?php else: ?>
                                 <div class="w-full h-32 bg-gradient-to-br from-orange-100 to-orange-200 rounded-lg mb-2 flex items-center justify-center text-4xl">
                                     🍽️
