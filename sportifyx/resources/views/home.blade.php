@@ -3,39 +3,18 @@
 @section('title', 'SportifyX - Platform Tiket Olahraga')
 
 @section('content')
-<!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 text-white overflow-hidden">
-    <div class="absolute inset-0 bg-black/20"></div>
-    <div class="absolute inset-0">
-        <div class="absolute top-20 left-10 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl"></div>
-    </div>
-    
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 lg:py-32">
-        <div class="text-center max-w-4xl mx-auto">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fade-in-up">
-                Beli Tiket Olahraga
-                <span class="block text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-400">
-                    Lebih Mudah & Cepat
-                </span>
-            </h1>
-            <p class="text-lg sm:text-xl text-blue-100 mb-10 max-w-2xl mx-auto leading-relaxed">
-                Platform terlengkap untuk membeli tiket event olahraga, membaca berita terkini, dan belanja merchandise resmi.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('events.index') }}" class="inline-flex items-center justify-center bg-white text-blue-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    <span class="mr-2">🎫</span> Lihat Event
-                </a>
-                <a href="{{ route('store.index') }}" class="inline-flex items-center justify-center bg-transparent border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/10 transition-all duration-300">
-                    <span class="mr-2">🛍️</span> Kunjungi Store
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
+<!-- Hero Section dengan Animasi -->
+@include('components.hero-animated')
 
 <!-- Sports Categories -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<section class="relative bg-gradient-to-br from-white via-blue-50 to-purple-50 py-16 overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-200/30 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-indigo-200/30 to-pink-200/30 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <div class="text-center mb-12">
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Pilih Kategori Olahraga</h2>
         <p class="text-gray-600 max-w-2xl mx-auto">Temukan event olahraga favoritmu dari berbagai kategori</p>
@@ -54,11 +33,19 @@
             </a>
         @endforeach
     </div>
+    </div>
 </section>
 
 <!-- Upcoming Events -->
-<section class="bg-gray-100 py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="relative bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-16 overflow-hidden">
+    <!-- Animated background shapes -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-20 -left-20 w-80 h-80 bg-gradient-to-br from-blue-300/20 to-indigo-300/20 rounded-full blur-3xl animate-blob"></div>
+        <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-gradient-to-tr from-purple-300/20 to-pink-300/20 rounded-full blur-3xl animate-blob" style="animation-delay: 2s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-indigo-200/15 to-purple-200/15 rounded-full blur-3xl animate-blob" style="animation-delay: 4s;"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
             <div>
                 <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Event Mendatang</h2>
@@ -126,7 +113,14 @@
 </section>
 
 <!-- Latest News -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<section class="relative bg-gradient-to-br from-white via-purple-50 to-pink-50 py-16 overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-10 right-10 w-72 h-72 bg-gradient-to-br from-purple-200/25 to-pink-200/25 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-10 left-10 w-72 h-72 bg-gradient-to-tr from-rose-200/25 to-orange-200/25 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
         <div>
             <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Berita Terkini</h2>
@@ -160,11 +154,18 @@
             </article>
         @endforeach
     </div>
+    </div>
 </section>
 
 <!-- Recent Matches -->
-<section class="bg-gray-900 text-white py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="relative bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-950 text-white py-16 overflow-hidden">
+    <!-- Subtle light effects for dark background -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
             <div>
                 <h2 class="text-3xl sm:text-4xl font-bold mb-2">Hasil Pertandingan</h2>
@@ -206,7 +207,14 @@
 </section>
 
 <!-- Featured Products -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<section class="relative bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 py-16 overflow-hidden">
+    <!-- Decorative background -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 right-0 w-80 h-80 bg-gradient-to-br from-teal-200/30 to-cyan-200/30 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-200/30 to-indigo-200/30 rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10">
         <div>
             <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Store Merchandise</h2>
@@ -257,16 +265,38 @@
             </div>
         @endforeach
     </div>
+    </div>
 </section>
 
 <!-- CTA Section -->
-<section class="bg-gradient-to-r from-blue-600 to-purple-600 py-16">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+<section class="relative bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 py-16 overflow-hidden">
+    <!-- Animated background effects -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-blob"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-blob" style="animation-delay: 2s;"></div>
+    </div>
+    
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
         <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">Siap Nonton Event Olahraga Favoritmu?</h2>
-        <p class="text-blue-100 text-lg mb-8">Daftar sekarang dan dapatkan akses ke ribuan event olahraga!</p>
-        <a href="{{ route('register') }}" class="inline-flex items-center bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
+        <p class="text-white/90 text-lg mb-8">Daftar sekarang dan dapatkan akses ke ribuan event olahraga!</p>
+        <a href="{{ route('register') }}" class="inline-flex items-center bg-white text-purple-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-black/20">
             Daftar Gratis Sekarang
         </a>
     </div>
 </section>
+
+<!-- Add animation styles -->
+<style>
+@keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(20px, -50px) scale(1.1); }
+    50% { transform: translate(-20px, 20px) scale(0.9); }
+    75% { transform: translate(50px, 50px) scale(1.05); }
+}
+
+.animate-blob {
+    animation: blob 20s ease-in-out infinite;
+}
+</style>
+
 @endsection
